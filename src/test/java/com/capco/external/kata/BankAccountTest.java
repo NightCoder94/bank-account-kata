@@ -116,4 +116,14 @@ public class BankAccountTest {
         assertEquals(expectedTransaction2.balance(), addedTransaction2.balance());
     }
 
+    @Test
+    @Order(6)
+    @DisplayName("Withdraw negative amount")
+    public void test_withdraw_negative_amount_should_throw_exception() {
+        bankAccount.deposit(new BigDecimal("500"));
+        assertThrows(IllegalArgumentException.class, () -> bankAccount.withdraw(new BigDecimal("-50")));
+        assertEquals(new BigDecimal("500"), bankAccount.getBalance());
+        assertEquals(1, bankAccount.getTransactionHistory().size());
+    }
+
 }
