@@ -18,6 +18,19 @@ The main features of the Bank Account Kata include:
 ### Test Scenarios
 
 The test scenarios for the Bank Account Kata are as follows:
+- Deposit a positive amount into an empty account.
+- Deposit a positive amount into an existing account with a positive balance.
+- Deposit a negative amount (should throw an exception).
+- Deposit an amount equal to zero (should not modify the balance).
+- Withdraw a positive amount from an account with sufficient balance.
+- Withdraw a negative amount (should throw an exception).
+- Withdraw an amount greater than the available balance (should throw an exception).
+- Withdraw an amount equal to zero (should not modify the balance).
+- Check the initial balance of a new account (should be zero).
+- Check balance in concurrent operations
+- Print the transaction history.
+- Attempt to deposit/withdraw a negative amount (should throw an exception).
+- Test the account behavior with decimal amounts.
 
 
 ## Prerequisites
