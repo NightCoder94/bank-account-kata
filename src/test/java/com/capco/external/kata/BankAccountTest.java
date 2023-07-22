@@ -1,5 +1,6 @@
 package com.capco.external.kata;
 
+import com.capco.external.kata.exception.InsufficientFundsException;
 import com.capco.external.kata.exception.InvalidAmountException;
 import com.capco.external.kata.transaction.Transaction;
 import com.capco.external.kata.transaction.TransactionType;
@@ -121,8 +122,28 @@ public class BankAccountTest {
     @DisplayName("Withdraw negative amount")
     public void test_withdraw_negative_amount_should_throw_exception() {
         bankAccount.deposit(new BigDecimal("500"));
-        assertThrows(IllegalArgumentException.class, () -> bankAccount.withdraw(new BigDecimal("-50")));
+        assertThrows(InvalidAmountException.class, () -> bankAccount.withdraw(new BigDecimal("-50")));
         assertEquals(new BigDecimal("500"), bankAccount.getBalance());
+        assertEquals(1, bankAccount.getTransactionHistory().size());
+    }
+
+    @Test
+    @Order(7)
+    @DisplayName("Withdraw with insufficient funds")
+    public void test_withdraw_amount_greater_than_balance_should_throw_exception() {
+        bankAccount.deposit(new BigDecimal("200"));
+        assertThrows(InsufficientFundsException.class, () -> bankAccount.withdraw(new BigDecimal("300")));
+        assertEquals(new BigDecimal("200"), bankAccount.getBalance());
+        assertEquals(1, bankAccount.getTransactionHistory().size());
+    }
+
+    @Test
+    @Order(7)
+    @DisplayName("Withdraw zero amount")
+    public void test_withdraw_zero_amount_should_tot_modify_anything() {
+        bankAccount.deposit(new BigDecimal("100"));
+        bankAccount.withdraw(new BigDecimal("0"));
+        assertEquals(new BigDecimal("100"), bankAccount.getBalance());
         assertEquals(1, bankAccount.getTransactionHistory().size());
     }
 
