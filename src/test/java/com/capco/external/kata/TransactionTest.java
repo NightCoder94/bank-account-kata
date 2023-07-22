@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@DisplayName("Bank Account Test Case")
+@DisplayName("Transaction Test Case")
 public class TransactionTest {
 
     private BankAccount bankAccount;
