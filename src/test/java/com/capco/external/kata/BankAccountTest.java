@@ -1,5 +1,6 @@
 package com.capco.external.kata;
 
+import com.capco.external.kata.exception.InvalidAmountException;
 import com.capco.external.kata.transaction.Transaction;
 import com.capco.external.kata.transaction.TransactionType;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,7 +28,14 @@ public class BankAccountTest {
     // Deposit Scenarios
 
     @Test
+    @DisplayName("New bank account should have zero balance")
     @Order(0)
+    public void test_create_new_account_should_have_zero_balance() {
+        assertEquals(BigDecimal.ZERO, bankAccount.getBalance());
+    }
+
+    @Test
+    @Order(1)
     @DisplayName("Deposit positive amount on empty account")
     public void test_deposit_positive_amount_on_empty_account_should_update_balance_and_transaction_history() {
         bankAccount.deposit(new BigDecimal("100"));
@@ -45,7 +53,7 @@ public class BankAccountTest {
     }
 
     @Test
-    @Order(1)
+    @Order(2)
     @DisplayName("Deposit positive amount on account with positive balance")
     public void test_deposit_positive_amount_on_account_with_positive_balance_should_update_balance_and_transaction_history() {
         bankAccount.deposit(new BigDecimal("500"));
@@ -70,7 +78,16 @@ public class BankAccountTest {
     @Order(3)
     @DisplayName("Deposit negative amount")
     public void test_deposit_negative_amount_should_throw_exception() {
-        assertThrows(IllegalArgumentException.class, () -> bankAccount.deposit(new BigDecimal("-50")));
+        assertThrows(InvalidAmountException.class, () -> bankAccount.deposit(new BigDecimal("-50")));
+        assertEquals(new BigDecimal("0"), bankAccount.getBalance());
+        assertEquals(0, bankAccount.getTransactionHistory().size());
+    }
+
+    @Test
+    @Order(4)
+    @DisplayName("Deposit zero amount")
+    public void test_deposit_zero_amount_should_not_modify_balance() {
+        bankAccount.deposit(new BigDecimal("0"));
         assertEquals(new BigDecimal("0"), bankAccount.getBalance());
         assertEquals(0, bankAccount.getTransactionHistory().size());
     }
