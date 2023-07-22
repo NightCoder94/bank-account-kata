@@ -92,4 +92,28 @@ public class BankAccountTest {
         assertEquals(0, bankAccount.getTransactionHistory().size());
     }
 
+    // Withdraw Scenarios
+
+    @Test
+    @Order(5)
+    @DisplayName("WithdrawPositiveAmountWithSufficientBalance")
+    public void test_withdraw_positive_amount_withsufficient_balance_should_update_balance_and_transaction_history() {
+        bankAccount.deposit(new BigDecimal("1000"));
+        bankAccount.withdraw(new BigDecimal("300"));
+        assertEquals(new BigDecimal("700"), bankAccount.getBalance());
+        assertEquals(2, bankAccount.getTransactionHistory().size());
+
+        Transaction expectedTransaction1 = new Transaction(TransactionType.DEPOSIT, LocalDateTime.now(), new BigDecimal("1000"), new BigDecimal("1000"));
+        Transaction addedTransaction1 = bankAccount.getTransactionHistory().get(0);
+        assertEquals(TransactionType.DEPOSIT, addedTransaction1.transactionType());
+        assertEquals(expectedTransaction1.amount(), addedTransaction1.amount());
+        assertEquals(expectedTransaction1.balance(), addedTransaction1.balance());
+
+        Transaction expectedTransaction2 = new Transaction(TransactionType.WITHDRAW, LocalDateTime.now(), new BigDecimal("300"), new BigDecimal("700"));
+        Transaction addedTransaction2 = bankAccount.getTransactionHistory().get(1);
+        assertEquals(TransactionType.WITHDRAW, addedTransaction2.transactionType());
+        assertEquals(expectedTransaction2.amount(), addedTransaction2.amount());
+        assertEquals(expectedTransaction2.balance(), addedTransaction2.balance());
+    }
+
 }
