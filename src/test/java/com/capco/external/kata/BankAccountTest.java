@@ -5,6 +5,9 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.UUID;
+
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -14,17 +17,21 @@ public class BankAccountTest {
 
     @BeforeEach
     public void setUp() {
-        bankAccount = new BankAccount();
+        bankAccount = new BankAccount(new BankClient("TOTI", "TOTO"));
     }
 
     // Deposit Scenarios
 
     @Test
-    public void testDepositPositiveAmountOnEmptyAccount() {
+    public void test_deposit_positive_amount_on_empty_account_should_update_balance_and_transaction_history() {
         bankAccount.deposit(new BigDecimal("100"));
         assertEquals(new BigDecimal("100"), bankAccount.getBalance());
-        assertEquals(1, bankAccount.getTransactionHistory().size());
-        Transaction expectedTransaction = new Transaction(TransactionType.DEPOSIT, LocalDateTime.now(), new BigDecimal("100"), new BigDecimal("100"));
-        assertEquals(expectedTransaction, bankAccount.getTransactionHistory().get(0));
+        assertEquals(1, bankAccount.getTransactionHistory().getTransactions().size());
+        Transaction addedTransaction = bankAccount.getTransactionHistory().getTransactions().get(0);
+        Transaction expectedTransaction = new Transaction(UUID.randomUUID(), TransactionType.DEPOSIT, LocalDateTime.now(), new BigDecimal("100"), new BigDecimal("100"));
+        assertEquals(TransactionType.DEPOSIT, addedTransaction.transactionType());
+        assertEquals(expectedTransaction.amount(), addedTransaction.amount());
+        assertEquals(expectedTransaction.balance(), addedTransaction.balance());
+        assertEquals(expectedTransaction.date().truncatedTo(ChronoUnit.SECONDS), addedTransaction.date().truncatedTo(ChronoUnit.SECONDS));
     }
 }
