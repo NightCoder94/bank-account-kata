@@ -19,10 +19,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @DisplayName("Transaction History Printer Test Case")
 public class TransactionHistoryPrinterTest {
 
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     private final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
     private TransactionHistoryPrinter transactionHistoryPrinter;
-
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @BeforeEach
     public void setUp() {
@@ -33,7 +32,7 @@ public class TransactionHistoryPrinterTest {
     @Test
     @Order(0)
     @DisplayName("Print all transactions history")
-    public void test_print_all_transaction_history() {
+    void test_print_all_transaction_history() {
         List<Transaction> transactionHistory = new ArrayList<>();
         LocalDateTime date = LocalDateTime.now();
         transactionHistory.add(new Transaction(TransactionType.DEPOSIT, date, new BigDecimal("100"), new BigDecimal("100")));
