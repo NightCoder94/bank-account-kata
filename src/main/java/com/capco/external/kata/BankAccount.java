@@ -6,7 +6,7 @@ import com.capco.external.kata.transaction.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.UUID;
+import java.util.List;
 
 public class BankAccount {
 
@@ -23,16 +23,20 @@ public class BankAccount {
     public void deposit(BigDecimal amount) {
         BankOperation operation = new Deposit(amount);
         balance = operation.apply(balance);
-        Transaction depositTransaction = new Transaction(UUID.randomUUID(), TransactionType.DEPOSIT, LocalDateTime.now(), amount, balance);
+        Transaction depositTransaction = new Transaction(TransactionType.DEPOSIT, LocalDateTime.now(), amount, balance);
         transactionHistory.addTransaction(depositTransaction);
+    }
+
+    public BankClient getClient() {
+        return client;
     }
 
     public BigDecimal getBalance() {
         return balance;
     }
 
-    public TransactionHistory getTransactionHistory() {
-        return transactionHistory;
+    public List<Transaction> getTransactionHistory() {
+        return transactionHistory.getTransactions();
     }
 
 }
