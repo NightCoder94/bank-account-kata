@@ -40,10 +40,12 @@ public class BankAccount {
             throw new InvalidAmountException("The withdraw amount must be positive.");
         }
 
-        BankOperation operation = new Withdraw(amount);
-        balance = operation.apply(balance);
-        Transaction withdrawTransaction = new Transaction(TransactionType.WITHDRAW, LocalDateTime.now(), amount, balance);
-        transactionHistory.addTransaction(withdrawTransaction);
+        if(amount.compareTo(BigDecimal.ZERO) > 0) {
+            BankOperation operation = new Withdraw(amount);
+            balance = operation.apply(balance);
+            Transaction withdrawTransaction = new Transaction(TransactionType.WITHDRAW, LocalDateTime.now(), amount, balance);
+            transactionHistory.addTransaction(withdrawTransaction);
+        }
     }
 
     public BankClient getClient() {
