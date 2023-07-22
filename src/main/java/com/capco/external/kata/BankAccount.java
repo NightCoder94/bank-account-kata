@@ -21,6 +21,9 @@ public class BankAccount {
     }
 
     public void deposit(BigDecimal amount) {
+        if (amount.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("The deposit amount must be positive.");
+        }
         BankOperation operation = new Deposit(amount);
         balance = operation.apply(balance);
         Transaction depositTransaction = new Transaction(TransactionType.DEPOSIT, LocalDateTime.now(), amount, balance);
