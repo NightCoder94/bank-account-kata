@@ -41,7 +41,7 @@ public class BankAccount {
         performOperation(amount, TransactionType.WITHDRAW);
     }
 
-    private void performOperation(BigDecimal amount, TransactionType transactionType) {
+    private synchronized void performOperation(BigDecimal amount, TransactionType transactionType) {
         BankOperation operation;
         if (TransactionType.DEPOSIT.equals(transactionType)){
             operation = new Deposit(amount);
