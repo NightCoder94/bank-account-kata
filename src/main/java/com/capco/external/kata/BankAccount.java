@@ -1,8 +1,11 @@
 package com.capco.external.kata;
 
+import com.capco.external.kata.operation.BankOperation;
+import com.capco.external.kata.operation.Deposit;
+import com.capco.external.kata.transaction.*;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
 public class BankAccount {
@@ -31,4 +34,5 @@ public class BankAccount {
     public TransactionHistory getTransactionHistory() {
         return transactionHistory;
     }
+
 }

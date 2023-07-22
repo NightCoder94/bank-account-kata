@@ -1,5 +1,7 @@
 package com.capco.external.kata;
 
+import com.capco.external.kata.transaction.Transaction;
+import com.capco.external.kata.transaction.TransactionType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -27,11 +29,14 @@ public class BankAccountTest {
         bankAccount.deposit(new BigDecimal("100"));
         assertEquals(new BigDecimal("100"), bankAccount.getBalance());
         assertEquals(1, bankAccount.getTransactionHistory().getTransactions().size());
+        
         Transaction addedTransaction = bankAccount.getTransactionHistory().getTransactions().get(0);
         Transaction expectedTransaction = new Transaction(UUID.randomUUID(), TransactionType.DEPOSIT, LocalDateTime.now(), new BigDecimal("100"), new BigDecimal("100"));
         assertEquals(TransactionType.DEPOSIT, addedTransaction.transactionType());
         assertEquals(expectedTransaction.amount(), addedTransaction.amount());
         assertEquals(expectedTransaction.balance(), addedTransaction.balance());
+
+        // Truncate seconds to compare the transactions (delta in creation time)
         assertEquals(expectedTransaction.date().truncatedTo(ChronoUnit.SECONDS), addedTransaction.date().truncatedTo(ChronoUnit.SECONDS));
     }
 }

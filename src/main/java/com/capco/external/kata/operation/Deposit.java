@@ -1,6 +1,6 @@
-package com.capco.external.kata;
+package com.capco.external.kata.operation;
 
-import com.capco.external.kata.BankOperation;
+import com.capco.external.kata.operation.BankOperation;
 
 import java.math.BigDecimal;
 

@@ -1,4 +1,4 @@
-package com.capco.external.kata;
+package com.capco.external.kata.operation;
 
 import java.math.BigDecimal;
 
