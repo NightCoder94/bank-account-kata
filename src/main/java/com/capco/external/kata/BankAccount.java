@@ -1,6 +1,5 @@
 package com.capco.external.kata;
 
-import com.capco.external.kata.exception.InvalidAmountException;
 import com.capco.external.kata.operation.BankOperation;
 import com.capco.external.kata.operation.Deposit;
 import com.capco.external.kata.operation.Withdraw;
@@ -22,32 +21,6 @@ public class BankAccount {
         this.balance = BigDecimal.ZERO;
     }
 
-    public void deposit(BigDecimal amount) {
-        if (amount.compareTo(BigDecimal.ZERO) < 0) {
-            throw new InvalidAmountException("The deposit amount must be positive.");
-        }
-
-        if(amount.compareTo(BigDecimal.ZERO) > 0) {
-            BankOperation operation = new Deposit(amount);
-            balance = operation.apply(balance);
-            Transaction depositTransaction = new Transaction(TransactionType.DEPOSIT, LocalDateTime.now(), amount, balance);
-            transactionHistory.addTransaction(depositTransaction);
-        }
-    }
-
-    public void withdraw(BigDecimal amount) {
-        if (amount.compareTo(BigDecimal.ZERO) < 0) {
-            throw new InvalidAmountException("The withdraw amount must be positive.");
-        }
-
-        if(amount.compareTo(BigDecimal.ZERO) > 0) {
-            BankOperation operation = new Withdraw(amount);
-            balance = operation.apply(balance);
-            Transaction withdrawTransaction = new Transaction(TransactionType.WITHDRAW, LocalDateTime.now(), amount, balance);
-            transactionHistory.addTransaction(withdrawTransaction);
-        }
-    }
-
     public BankClient getClient() {
         return client;
     }
@@ -56,8 +29,30 @@ public class BankAccount {
         return balance;
     }
 
-    public List<Transaction> getTransactionHistory() {
+    public List<Transaction> getTransactions() {
         return transactionHistory.getTransactions();
+    }
+
+    public void deposit(BigDecimal amount) {
+        performOperation(amount, TransactionType.DEPOSIT);
+    }
+
+    public void withdraw(BigDecimal amount) {
+        performOperation(amount, TransactionType.WITHDRAW);
+    }
+
+    private void performOperation(BigDecimal amount, TransactionType transactionType) {
+        BankOperation operation;
+        if (TransactionType.DEPOSIT.equals(transactionType)){
+            operation = new Deposit(amount);
+        } else {
+            operation = new Withdraw(amount);
+        }
+        balance = operation.apply(balance);
+        if(amount.compareTo(BigDecimal.ZERO) > 0) {
+            Transaction withdrawTransaction = new Transaction(transactionType, LocalDateTime.now(), amount, balance);
+            transactionHistory.addTransaction(withdrawTransaction);
+        }
     }
 
 }
