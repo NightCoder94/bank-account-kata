@@ -96,8 +96,8 @@ public class BankAccountTest {
 
     @Test
     @Order(5)
-    @DisplayName("WithdrawPositiveAmountWithSufficientBalance")
-    public void test_withdraw_positive_amount_withsufficient_balance_should_update_balance_and_transaction_history() {
+    @DisplayName("Withdraw positive amount with sufficient balance")
+    public void test_withdraw_positive_amount_with_sufficient_balance_should_update_balance_and_transaction_history() {
         bankAccount.deposit(new BigDecimal("1000"));
         bankAccount.withdraw(new BigDecimal("300"));
         assertEquals(new BigDecimal("700"), bankAccount.getBalance());

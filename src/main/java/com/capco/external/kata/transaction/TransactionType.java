@@ -1,5 +1,5 @@
 package com.capco.external.kata.transaction;
 
 public enum TransactionType {
-    DEPOSIT
+    WITHDRAW, DEPOSIT
 }

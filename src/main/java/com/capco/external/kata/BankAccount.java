@@ -3,6 +3,7 @@ package com.capco.external.kata;
 import com.capco.external.kata.exception.InvalidAmountException;
 import com.capco.external.kata.operation.BankOperation;
 import com.capco.external.kata.operation.Deposit;
+import com.capco.external.kata.operation.Withdraw;
 import com.capco.external.kata.transaction.*;
 
 import java.math.BigDecimal;
@@ -22,7 +23,6 @@ public class BankAccount {
     }
 
     public void deposit(BigDecimal amount) {
-
         if (amount.compareTo(BigDecimal.ZERO) < 0) {
             throw new InvalidAmountException("The deposit amount must be positive.");
         }
@@ -33,8 +33,13 @@ public class BankAccount {
             Transaction depositTransaction = new Transaction(TransactionType.DEPOSIT, LocalDateTime.now(), amount, balance);
             transactionHistory.addTransaction(depositTransaction);
         }
+    }
 
-
+    public void withdraw(BigDecimal amount) {
+        BankOperation operation = new Withdraw(amount);
+        balance = operation.apply(balance);
+        Transaction withdrawTransaction = new Transaction(TransactionType.WITHDRAW, LocalDateTime.now(), amount, balance);
+        transactionHistory.addTransaction(withdrawTransaction);
     }
 
     public BankClient getClient() {
